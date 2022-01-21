@@ -24,10 +24,11 @@ class Rope
       
     }
     
-    // break()
-    // { //Matter.Composite.clear(this.rope,true);
-    //   this.body = null;
-    // }
+    break()
+    { //Matter.Composite.clear(this.rope,true);
+      this.body = null
+    
+    }
     
     show()
     {
