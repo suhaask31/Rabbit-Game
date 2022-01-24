@@ -1,10 +1,9 @@
 class Link{
     constructor(bodyA,bodyB)
     {
-      var lastlink = bodyA.body.bodies.length-2;
      this.link = Constraint.create(
         {
-          bodyA:bodyA.body.bodies[lastlink],
+          bodyA:bodyA.body.bodies[6],
           pointA:{x:0,y:0},
           bodyB:bodyB,
           pointB:{x:0,y:0},
@@ -13,10 +12,11 @@ class Link{
         });
         World.add(engine.world,this.link);
     } 
-detach(){
-  World.remove(engine.world,this.link)
-}
 
-
+    detach()
+    {
+      World.remove(engine.world,this.link);
+     
+    }
 }
 

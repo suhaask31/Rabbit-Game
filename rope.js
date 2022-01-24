@@ -26,8 +26,7 @@ class Rope
     
     break()
     { //Matter.Composite.clear(this.rope,true);
-      this.body = null
-    
+      this.body = null;
     }
     
     show()
