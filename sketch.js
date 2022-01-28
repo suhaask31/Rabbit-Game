@@ -54,8 +54,19 @@ function preload()
 }
 
 function setup() {
-  createCanvas(500,700);
- 
+  // createCanvas(500,700);
+var mobileScreen=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+if(mobileScreen){
+  canw=displayWidth
+  canh=displayHeight
+  createCanvas(displayWidth,displayHeight)
+
+}
+else{  canw=windowWidth
+  canh=windowHeight
+  createCanvas(windowWidth,windowHeight)
+}
+
   frameRate(80);
 
   // bk_song.play();
@@ -163,7 +174,7 @@ function drop()
 function drop2(){
   cut_sound.play()
   rope2.break();
-  fruit_con_2.detatch();
+  fruit_con_2.detach();
   fruit_con_2= null;
 }
 
