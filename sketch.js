@@ -9,10 +9,10 @@ const Composite = Matter.Composite;
 
 let engine;
 let world;
-var rope,fruit,ground;
+var rope,fruit,ground,rope2,rope3;
 var fruit_con;
 var fruit_con_2;
-
+var fruit_con_3;
 var bg_img;
 var food;
 var rabbit;
@@ -29,8 +29,7 @@ var cut_sound;
 var sad_sound;
 var eating_sound;
 var air;
-var balloon
-var muteButton
+
 function preload()
 {
   bg_img = loadImage('background.png');
@@ -38,7 +37,7 @@ function preload()
   rabbit = loadImage('Rabbit-01.png');
 
   bk_song = loadSound('sound1.mp3');
-  sad_sound = loadSound("sad.wav") 
+  sad_sound = loadSound("sad.wav")
   cut_sound = loadSound('rope_cut.mp3');
   eating_sound = loadSound('eating_sound.mp3');
   air = loadSound('air.wav');
@@ -56,38 +55,44 @@ function preload()
 
 function setup() {
   createCanvas(500,700);
-
+ 
   frameRate(80);
 
-  bk_song.play();
-  bk_song.setVolume(0.090);
+  // bk_song.play();
+  // bk_song.setVolume(0.5);
 
   engine = Engine.create();
   world = engine.world;
   
   button = createImg('cut_btn.png');
-  button.position(220,30);
+  button.position(220,15);
   button.size(50,50);
   button.mouseClicked(drop);
+  button2 = createImg('cut_btn.png');
+  button2.position(90,70);
+  button2.size(50,50);
+  button2.mouseClicked(drop2);
+  button3 = createImg('cut_btn.png');
+  button3.position(370,90)
+  button3.size(50,50);
+  button3.mouseClicked(drop3);
 
-  balloon = createImg('balloon.png')
-  balloon.position(10,230)
-  balloon.size(130,100)
-  balloon.mouseClicked(balloonAir)
+
+  mute_btn = createImg('mute.png');
+  mute_btn.position(450,20);
+  mute_btn.size(50,50);
+  mute_btn.mouseClicked(mute);
   
-  muteButton = createImg('mute.png')
-  muteButton.position(430,10)
-  muteButton.size(50,50)
-  muteButton.mouseClicked(mute)
-
-
   rope = new Rope(7,{x:245,y:30});
   ground = new Ground(200,690,600,20);
+rope2 = new Rope (7,{x:135,y:90})
+rope3 = new Rope (8,{x:370,y:110})
+
 
   blink.frameDelay = 20;
   eat.frameDelay = 20;
 
-  bunny = createSprite(230,620,100,100);
+  bunny = createSprite(420,620,100,100);
   bunny.scale = 0.2;
 
   bunny.addAnimation('blinking',blink);
@@ -99,6 +104,8 @@ function setup() {
   Matter.Composite.add(rope.body,fruit);
 
   fruit_con = new Link(rope,fruit);
+  fruit_con_2 = new Link(rope2,fruit)
+  fruit_con_3 = new Link(rope3,fruit)
 
   rectMode(CENTER);
   ellipseMode(RADIUS);
@@ -119,6 +126,8 @@ function draw()
   pop();
 
   rope.show();
+  rope2.show();
+  rope3.show();
   Engine.update(engine);
   ground.show();
 
@@ -127,28 +136,43 @@ function draw()
   if(collide(fruit,bunny)==true)
   {
     bunny.changeAnimation('eating');
-    eating_sound.play()
+    eating_sound.play();
   }
 
 
   if(fruit!=null && fruit.position.y>=650)
   {
     bunny.changeAnimation('crying');
+    bk_song.stop();
+    sad_sound.play();
     fruit=null;
-     sad_sound.play()
-     bk_song.stop()
+     
    }
    
 }
 
 function drop()
 {
+  cut_sound.play();
   rope.break();
   fruit_con.detach();
-  fruit_con = null;
-  cut_sound.play()
+  fruit_con = null; 
+  
 }
 
+function drop2(){
+  cut_sound.play()
+  rope2.break();
+  fruit_con_2.detatch();
+  fruit_con_2= null;
+}
+
+function drop3(){
+  cut_sound.play()
+  rope3.break()
+  fruit_con_3.detach()
+  fruit_con_3 = null;
+}
 
 function collide(body,sprite)
 {
@@ -167,25 +191,18 @@ function collide(body,sprite)
          }
 }
 
-function balloonAir(){
-Matter.Body.applyForce(fruit,{x:0,y:0},{x:0.02,y:0})
-air.play()
-air.setVolume(0.08)
 
+function mute()
+{
+  if(bk_song.isPlaying())
+     {
+      bk_song.stop();
+     }
+
+
+     else{
+      bk_song.play();
+     }
 }
 
-function mute(){
-if(bk_song.isPlaying()){
-  bk_song.stop()
 
-}  
-else{bk_song.play()}
-}
-function keyPressed(){
-  if(keyCode===RIGHT_ARROW){
-    balloonAir()
-  }
-  if(keyCode===77){
-    mute()
-  }
-}
